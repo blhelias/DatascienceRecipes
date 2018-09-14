@@ -1,5 +1,6 @@
 # datascience_recipe
-Learn how to program from scratch 9 algorithms of machine learning:
+Let's implement AI algorithmes from scratch !!
+
 * ACP
 * Least Square / Polynomial regression
 * K-Means clustering
