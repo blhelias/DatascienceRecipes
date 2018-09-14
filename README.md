@@ -4,6 +4,7 @@ Let's implement AI algorithmes from scratch !!
 * ACP
 * Least Square / Polynomial regression
 * K-Means clustering
+![alt text]()
 * Logistic Regression
 * SVM
 * Multi Layer Perceptron
