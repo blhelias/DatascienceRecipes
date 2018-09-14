@@ -5,7 +5,7 @@ Let's implement AI algorithmes from scratch !!
 * Least Square / Polynomial regression
 * K-Means clustering
 
-![alt text](https://github.com/blhelias/datascience_recipe/blob/master/KMeans/kmeans.png)
+![alt text](http://recordit.co/7erwfXBbLM)
 
 * Logistic Regression
 * SVM
