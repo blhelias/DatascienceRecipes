@@ -4,7 +4,7 @@ Created on Thu May 10 18:55:48 2018
 
 @author: brieu
 """
-#%%
+
 #les imports
 import pandas as pd
 import numpy as np
@@ -13,7 +13,7 @@ from sklearn.decomposition import PCA
 from scipy import linalg
 #from scipy.sparse import issparse
 from sklearn.utils.extmath import svd_flip
-#%%
+
 
 class PCA_homemade():
     
@@ -71,7 +71,7 @@ class PCA_homemade():
 """
 1 get the data in a dataframe
 """
-dataset = pd.read_csv("data.csv", sep=";")
+dataset = pd.read_csv("../data/Sales.csv", sep=";")
 del dataset["Unnamed: 0"]
 
 list(dataset.columns.values)
