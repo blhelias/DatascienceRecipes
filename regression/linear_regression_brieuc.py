@@ -47,8 +47,8 @@ class LinearRegressionBrieuc:
                  least_square=False,
                  mle=False,
                  lr=0.0001,
-                 precision=0.001,
-                 max_iters=1000,
+                 precision=0.01,
+                 max_iters=10000,
                  previous_step_size=1):
         self.gradient_descent = gradient_descent
         self.least_square = least_square
@@ -87,8 +87,8 @@ class LinearRegressionBrieuc:
         """
         iters = 0
         #initialisation de b et m
-        b =  0
-        m = 0
+        b =  8
+        m = 1
         while iters < self.max_iters:
             b, m = self.__step_gradient(x, y, b, m)
             iters += 1
