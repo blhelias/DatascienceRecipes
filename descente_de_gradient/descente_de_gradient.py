@@ -20,22 +20,29 @@ def minimize_stochastic(target_fn: Callable,
     theta = theta_0
     min_theta, min_value = None, float("inf")
     alpha = learning_rate
-
+    count=0
     while num_iters_with_no_improvements < 100:
-        value = sum( target_fn(x_i, y_i, theta) for x_i, y_i in data)
-        if value < min_value:
-            min_theta, min_value = theta, value
+        loss = sum(target_fn(x_i, y_i, theta) for x_i, y_i in data)
+        if loss < min_value:
+            improvement = min_value - loss
+            if improvement <= 0.05:
+                count+=1
+                if count >=1000:
+                    return min_theta
+            else:
+                count = 0
+            min_theta, min_value = theta, loss
             num_iters_with_no_improvements = 0
             alpha = learning_rate
         else:
-            # 
+            # reduce the leanring rate when no improvement on loss
             num_iters_with_no_improvements += 1
             alpha *= 0.9
         # update value with descent gradient
         for x_i, y_i in random_order(data):
             gradient_i = gradient_fn(x_i, y_i,theta)
             theta = vector_substract(theta, scalar_multiply(alpha, gradient_i))
-        print(min_theta)
+        # print(min_theta)
     return min_theta
 
 def safe(f):
