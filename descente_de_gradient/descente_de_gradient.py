@@ -7,14 +7,14 @@ Created on Sun Sep 23 22:42:03 2018
 from typing import Callable, List, Optional
 import numpy as np
 import random
-
+import math
 
 
 def minimize_stochastic(target_fn: Callable,
                         gradient_fn: Callable,
                         x: List[List[float]], y: List[float],
                         theta_0: List[float],
-                        learning_rate: float = 0.01) -> Optional[List[float]]:
+                        learning_rate: float = 0.001) -> Optional[List[float]]:
     num_iters_with_no_improvements = 0
     data = list(zip(x, y))
     theta = theta_0
@@ -23,14 +23,17 @@ def minimize_stochastic(target_fn: Callable,
     count=0
     while num_iters_with_no_improvements < 100:
         loss = sum(target_fn(x_i, y_i, theta) for x_i, y_i in data)
+        print(loss)
         if loss < min_value:
             improvement = min_value - loss
-            if improvement <= 0.05:
+            if improvement <= 0.01:
                 count+=1
-                if count >=1000:
+                if count >= 100:
                     return min_theta
             else:
+                # reinitialize count to 0
                 count = 0
+                
             min_theta, min_value = theta, loss
             num_iters_with_no_improvements = 0
             alpha = learning_rate
@@ -40,9 +43,8 @@ def minimize_stochastic(target_fn: Callable,
             alpha *= 0.9
         # update value with descent gradient
         for x_i, y_i in random_order(data):
-            gradient_i = gradient_fn(x_i, y_i,theta)
+            gradient_i = gradient_fn(x_i, y_i, theta)
             theta = vector_substract(theta, scalar_multiply(alpha, gradient_i))
-        # print(min_theta)
     return min_theta
 
 def safe(f):
@@ -67,7 +69,6 @@ def vector_substract(vec1, vec2):
 def random_order(arr: np.ndarray):
     """generator that returns the elements of data in random order"""
     indexes: List[int] = [i for i, _ in enumerate(arr)]
-    random.seed(0)
     random.shuffle(indexes)
     for i in indexes:
         yield arr[i]
