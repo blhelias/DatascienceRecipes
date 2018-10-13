@@ -17,7 +17,7 @@ Let's implement AI algorithmes from scratch !!
 
 Table                                                                                         |  Decision tree
 :--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:
-![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png){:height="36px" width="36px"}.
+![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png).
 
 
 ## SVM
