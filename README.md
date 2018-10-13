@@ -4,7 +4,7 @@ Let's implement AI algorithmes from scratch !!
 * ACP
 * Least Square / Polynomial regression
 
-![alt text](https://github.com/blhelias/datascience_recipe/blob/master/regression/least_square.png =200x150)
+![alt text](https://github.com/blhelias/datascience_recipe/blob/master/regression/least_square.png) { width: 200px; }
 
 * K-Means clustering
 
@@ -16,4 +16,4 @@ Let's implement AI algorithmes from scratch !!
 * CNN
 * Decision Tree
 
-![alt text](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png = 200x150)
+![alt text](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png) { width: 200px; }
