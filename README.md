@@ -15,7 +15,10 @@ Let's implement AI algorithmes from scratch !!
 
 ## Decision Tree
 
-<img align="left" src="https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg" width="400">  <img align="right" src="https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png" width="300"><br>
+    Table                  |  Decision tree
+:-------------------------:|:-------------------------:
+![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png)
+
 
 ## SVM
 
