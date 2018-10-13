@@ -18,5 +18,7 @@ Let's implement AI algorithmes from scratch !!
 <img align="left" src="https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg" width="400">  <img align="right" src="https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png" width="400">
 
 ## SVM
+
 ## Multi Layer Perceptron
+
 ## CNN
