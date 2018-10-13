@@ -15,3 +15,5 @@ Let's implement AI algorithmes from scratch !!
 * Multi Layer Perceptron
 * CNN
 * Decision Tree
+
+![alt text](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png)
