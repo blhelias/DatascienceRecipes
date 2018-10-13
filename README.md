@@ -15,8 +15,8 @@ Let's implement AI algorithmes from scratch !!
 
 ## Decision Tree
 
-    Table                  |  Decision tree
-:-------------------------:|:-------------------------:
+Table                                                                                         |  Decision tree
+:--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:
 ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png)
 
 
