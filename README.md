@@ -3,8 +3,8 @@ Let's implement AI algorithmes from scratch !!
 
 * ACP
 * Least Square / Polynomial regression
-
-![alt text](https://github.com/blhelias/datascience_recipe/blob/master/regression/least_square.png) { width: 200px; }
+<img src="https://github.com/blhelias/datascience_recipe/blob/master/regression/least_square.png" width="200">
+![alt text](https://github.com/blhelias/datascience_recipe/blob/master/regression/least_square.png) 
 
 * K-Means clustering
 
