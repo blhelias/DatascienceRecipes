@@ -16,5 +16,4 @@ Let's implement AI algorithmes from scratch !!
 * CNN
 * Decision Tree
 
-<img src="https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg" width="400">
-<img src="https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png" width="400">
+<img src="https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg" width="350"><img src="https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png" width="350">
