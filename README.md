@@ -15,6 +15,8 @@ Let's implement AI algorithmes from scratch !!
 
 ## Decision Tree
 
+Google tutorial with some few additionnals options
+
 Table                                                                                         |  Decision tree
 :--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:
 ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png).
@@ -24,4 +26,5 @@ Table                                                                           
 
 ## Multi Layer Perceptron
 
-## CNN
+## Deep Learning Library
+Joel grus live coding  
