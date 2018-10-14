@@ -1,4 +1,5 @@
-# datascience_recipe
+# Datascience Recipe
+
 ### Let's implement AI algorithmes from scratch !!
 
 ## ACP
