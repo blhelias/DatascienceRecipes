@@ -14,6 +14,8 @@
 
 ## Logistic Regression
 
+* TODO
+
 ## Decision Tree
 
 Google tutorial with some few additionnals options
@@ -25,7 +27,7 @@ Table                                                                           
 
 ## SVM
 
-## Multi Layer Perceptron
+TODO
 
 ## Deep Learning Library
 Joel grus live coding  
