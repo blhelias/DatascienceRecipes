@@ -59,6 +59,6 @@ class Entropy(SplitCriteria):
         """
         p_l = float(len(left)) / (len(left) + len(right))
         p_r = 1 - p_l
-        return current_uncertainty - p_l * self.get_purity(left) - p_r * self.get_purity(right)
+        return current_uncertainty - p_l * self.get_impurity(left) - p_r * self.get_impurity(right)
 
 
