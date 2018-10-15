@@ -1,8 +1,5 @@
 from collections import namedtuple
 
-# Fruit = namedtuple('Fruit', ["color", "diametere", "target"])
-# fruit = [Fruit("Green", 3, "Apple"), Fruit("Yellow", 3, "Apple"), Fruit("Red", 2, "Grape"), Fruit("Red", 1, "Grape"), Fruit("Yellow", 3, "Lemon")]
-
 Data = namedtuple('Data', ["outlook", "temperature", "humidity", "wind", "target"])
 
 data = [Data("sunny", "hot", "high", "false", "no"), 

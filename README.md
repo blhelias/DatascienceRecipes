@@ -1,6 +1,6 @@
 # Datascience Recipe
 
-### Let's implement AI algorithmes from scratch !!
+### Let's implement ML algorithms from scratch !!
 
 ## ACP
 

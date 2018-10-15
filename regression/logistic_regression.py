@@ -63,5 +63,6 @@ def in_random_order(data: np.ndarray) -> np.ndarray:
 def vector_subtract(vec1, vec2):
     raise NotImplementedError
 
+
 def scalar_multiply(sca1, sca2):
     raise NotImplementedError   
