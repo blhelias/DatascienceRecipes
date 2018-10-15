@@ -101,7 +101,7 @@ class Tree:
         and calculating the information gain."""
         best_gain = 0  # keep track of the best information gain
         best_question = None  # keep train of the feature / value that produced it
-        current_uncertainty = Entropy().get_purity(data)
+        current_uncertainty = Entropy().get_impurity(data)
         n_features = len(data[0]) - 1  # number of columns
 
         for col in range(n_features):  # for each feature

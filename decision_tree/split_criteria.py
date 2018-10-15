@@ -2,7 +2,7 @@ from leaf import class_counts
 import math
 
 class SplitCriteria:
-    def purity(self, data):
+    def get_impurity(self, data):
         raise NotImplementedError
     
     def info_gain(self, left, right, current_uncertainty):
@@ -11,7 +11,7 @@ class SplitCriteria:
 
 class Gini(SplitCriteria):
 
-    def get_purity(self, data):
+    def get_impurity(self, data):
         """
         sum (p_j * ( 1 - p_j )) = 1 - sum(pj)
         """
@@ -33,12 +33,12 @@ class Gini(SplitCriteria):
         """
         p_l = float(len(left)) / (len(left) + len(right))
         p_r = 1 - p_l
-        return current_uncertainty - p_l * self.get_purity(left) - p_r * self.get_purity(right)
+        return current_uncertainty - p_l * self.get_impurity(left) - p_r * self.get_impurity(right)
 
 
 class Entropy(SplitCriteria):
 
-    def get_purity(self, data):
+    def get_impurity(self, data):
         """
         ( - sum ( p_j * log( p_j ) ) )
         """
