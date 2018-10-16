@@ -22,7 +22,7 @@ Google tutorial with some few additionnals options
 
 Table                                                                                         |  Decision tree
 :--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:
-![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png).
+![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png)
 
 
 ## SVM
