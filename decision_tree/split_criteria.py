@@ -2,6 +2,7 @@ from leaf import class_counts
 import math
 
 class SplitCriteria:
+
     def get_impurity(self, data):
         raise NotImplementedError
     

@@ -4,8 +4,11 @@ Created on Wed Aug  1 16:19:19 2018
 
 @author: brieu
 """
-import logging 
+import logging
 from regression.linear_regression_brieuc import LinearRegressionBrieuc
+from decision_tree.decision_tree import Tree
+from decision_tree.data import data
+import decision_tree
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -76,3 +79,12 @@ m = regr.coef_[0][0]
 title = "scikit learn"
 compute_results(x,y,b,m,title,"green")
 plt.show()
+
+"""
+5 - decision tree
+"""
+tree = Tree()
+my_tree = tree.build_tree(data)
+tree.print_tree(my_tree)
+
+
