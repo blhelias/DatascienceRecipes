@@ -1,0 +1,1 @@
+DATA_PATH = "C:\\Users\\brieuc.lhelias\\Desktop\\workspace\\datascience_recipe\\data"

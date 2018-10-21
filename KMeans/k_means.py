@@ -7,6 +7,8 @@ TODO: ne pas reformater le dict a chaque itération !!!!
 TODO: S'assurer quil n'y a pas de dupliqués lors de l'initialisation
 de la forgy method.
 """
+import os 
+
 import math
 
 from typing import Tuple, Dict
@@ -16,7 +18,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import pandas as pd
-
+from path import DATA_PATH
+import matplotlib.animation as animation
 
 class KMeans:
     """
@@ -39,8 +42,7 @@ class KMeans:
 
     def normalization(self):
         """
-        centrer et réduire les donnees: souvent effectuer ce genre de technic
-        diminue le temps de calcule de l'algo, ainsi que le résultat.
+        Centrer et réduire les données
         """
         raise NotImplementedError
 
@@ -48,8 +50,8 @@ class KMeans:
                        random: bool = False,
                        forgy: bool = False) -> np.array:
         """
-        # Cette fonction permet d'initialiser les centroids soit de maniere
-        # aléatoire ou en utilisant la technique de forgy
+        Cette fonction permet d'initialiser les centroids soit de maniere
+        aléatoire ou en utilisant la technique de forgy
         """
         s = self.data.shape
         col = s[1]
@@ -63,15 +65,14 @@ class KMeans:
 
     def voronoi_partition(self, liste_prototypes: np.array) -> Dict:
         """
-        # Cette methode prend en argument la liste des prototypes.
-        # A partir de cette liste, on va créer les nouveaux clusters,
-        # des sous partitions en fonction des distances de chaque point
-        # Avec les prototypes.
+        Cette methode prend en argument la liste des prototypes.
+        A partir de cette liste, on va créer les nouveaux clusters,
+        des sous partitions en fonction des distances de chaque point
+        Avec les prototypes.
         """
-        n = len(liste_prototypes)
         partition = {}
-        for init_list in range(n):
-            partition[str(init_list)] = []
+        for init_index in range(len(liste_prototypes)):
+            partition[str(init_index)] = []
 
         for data_point in self.data:
             min_dist: float = 100.
@@ -82,16 +83,20 @@ class KMeans:
                 if temp_dist < min_dist:
                     min_dist = temp_dist
                     min_dist_arg = element
+            # make sure the list is not empty before stacking rows
+            if len(partition[str(min_dist_arg)]) != 0:
+                partition[str(min_dist_arg)] = np.row_stack([partition[str(min_dist_arg)], 
+                                                             data_point])
+            else:
+                partition[str(min_dist_arg)].append(data_point)
 
-            partition[str(min_dist_arg)].append(data_point)
-
-        return self.reformat_dict_values(partition)
+        return partition
 
     def compute_distance(self,
                          pointa: np.array,
                          pointb: np.array) -> float:
         """
-        # plusieurs distances sont en cours d'implementation
+        Distances entre 2 vecteurs
         """
         assert len(pointa) == len(pointb), "les deux arrays"\
         "n'ont pas la meme dim ! "
@@ -105,18 +110,6 @@ class KMeans:
             for element in range(len(pointa)):
                 distance += abs(pointa[element] - pointb[element])
             return distance
-
-    def reformat_dict_values(self, dic: Dict) -> Dict:
-        """
-        le but est de supprimer des méthode qui rajoute
-        des calcules en plus.
-        """
-        for key, value in dic.items():
-            if dic[key] == []:
-                continue
-            else:
-                dic[key] = np.vstack(value)
-        return dic
 
     def update_centroids(self,
                          dic: Dict,
@@ -144,29 +137,30 @@ class KMeans:
         """
         l_proto = self.initialization(forgy=True)
         partition = {}
+        fig = plt.figure()
+        ims = []
         for _ in range(self.n_iters):
             partition = self.voronoi_partition(l_proto)
             l_proto, previous_dist = self.update_centroids(partition, l_proto)
             print("centroids: {}".format(l_proto))
             if l_proto.shape[1] == 2:
-                plt.plot(self.data[:, 0], self.data[:, 1], 'o', color='b')
-                plt.plot(l_proto[:, 0], l_proto[:, 1], 'X', color='r')
-                plt.show()
+                a, = plt.plot(self.data[:, 0], self.data[:, 1], 'o', color='b')
+                b, = plt.plot(l_proto[:, 0], l_proto[:, 1], 'X', color='r')
+                ims.append([a, b])
+         
             if previous_dist <= self.threshold:
                 break
+        # Plot the training process with a nice animation
+        img = animation.ArtistAnimation(fig, ims, interval=500, blit=True, repeat_delay=100)
+        plt.show()
         return l_proto, partition
 
-def generate_data(line: int, col: int):
-    """
-    générer un dataset random
-    """
-    return np.random.rand(line, col)
 
 def load_data():
     """
     charger le dataset data_1024.csv
     """
-    data = pd.read_csv('data/data_1024.csv', sep='\t')
+    data = pd.read_csv(os.path.join(DATA_PATH,'data_1024.csv'), sep='\t')
     del data['Driver_ID']
     mean = data.mean(axis=0)
     data -= mean
@@ -174,14 +168,16 @@ def load_data():
     data /= std
     return data.values
 
-#cluster_data = generate_data(line=50, col=4)
-cluster_data = load_data()  
-#instantiate KMeans class
-k_means = KMeans(n_clusters=4,
-                 data=cluster_data,
-                 distance="euclidian",
-                 threshold=0.001,
-                 n_iters = 100,
-                 initialisation="forgy")
-#kmeans training
-centroids, partition_data = k_means.train()
+if __name__ == "__main__":
+
+    #cluster_data = generate_data(line=50, col=4)
+    cluster_data = load_data()  
+    #instantiate KMeans class
+    k_means = KMeans(n_clusters=4,
+                    data=cluster_data,
+                    distance="euclidian",
+                    threshold=0.001,
+                    n_iters = 1000,
+                    initialisation="forgy")
+    #kmeans training
+    centroids, partition_data = k_means.train()
