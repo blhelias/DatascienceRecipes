@@ -9,7 +9,7 @@
 
 ## K-Means clustering
 
-![alt text](http://g.recordit.co/7erwfXBbLM.gif)
+![alt text](http://g.recordit.co/3GKF1i8YS8.gif)
 
 
 ## Logistic Regression
