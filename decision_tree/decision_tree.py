@@ -1,7 +1,7 @@
 import itertools
 from collections import namedtuple
 from typing import List, NamedTuple
-from split_criteria import Gini, Entropy
+#from split_criteria import Gini, Entropy
 from data import data, Data
 from question import Question
 from leaf import Leaf, class_counts
