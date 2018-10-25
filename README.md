@@ -14,8 +14,12 @@
 
 ## Logistic Regression
 
-* TODO
+### In this section, we build a logistic regression and compare our results with scikit learn.
 
+TODO :
+  * Add some regularization
+  * Try to implement logreg with scikit learn's cost function
+  
 ## Decision Tree
 
 Google tutorial with some few additionnals options
