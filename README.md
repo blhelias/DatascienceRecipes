@@ -34,4 +34,8 @@ Table                                                                           
 TODO
 
 ## Deep Learning Library
-Joel grus live coding  
+Joel grus live coding
+
+## Gaussian Mixture Model
+
+TODO
