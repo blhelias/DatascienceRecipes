@@ -1,80 +1,71 @@
-# -*- coding: utf-8 -*-
 """
 Created on Tue Sep 11 16:18:25 2018
 
 @author: brieuc.lhelias
-TODO: ne pas reformater le dict a chaque itération !!!!
-TODO: S'assurer quil n'y a pas de dupliqués lors de l'initialisation
+TODO: S'assurer qu'il n'y a pas de dupliqués lors de l'initialisation
 de la forgy method.
+TODO: Deplacer la methode load data
+TODO: separer fit et plot
 """
-import os 
-
+import os
 import math
 
-from typing import Tuple, Dict
+from typing import Tuple, Dict, List
 
 import numpy as np
+import pandas as pd
 
 import matplotlib.pyplot as plt
-
-import pandas as pd
-from path import DATA_PATH
 import matplotlib.animation as animation
+
+import seaborn as sns
+
+from path import DATA_PATH
+
 
 class KMeans:
     """
     let's implement simple K-means !
     """
-    def __init__(self,
-                 n_clusters: int,
-                 data: np.ndarray,
-                 distance: str = "euclidian",
-                 threshold: float = 0.1,
-                 n_iters: int = 50,
-                 initialisation: str = "forgy") -> None:
+    def __init__(self, n_clusters: int, distance: str = "euclidian", 
+                 threshold: float = 0.1, n_iters: int = 50, 
+                 initialization: str = "forgy") -> None:
 
         self.n_clusters = n_clusters
-        self.data = data
         self.distance = distance
         self.threshold = threshold
         self.n_iters = n_iters
-        self.initialisation = initialisation
+        self._initialization = initialization
+        self._training_history = []
+        self.fig = plt.figure("KMEANS")
 
-    def normalization(self):
-        """
-        Centrer et réduire les données
-        """
-        raise NotImplementedError
-
-    def initialization(self,
-                       random: bool = False,
+    def initialization(self, X: np.ndarray, random: bool = False,
                        forgy: bool = False) -> np.array:
         """
         Cette fonction permet d'initialiser les centroids soit de maniere
         aléatoire ou en utilisant la technique de forgy
         """
-        s = self.data.shape
-        col = s[1]
-        if self.initialisation == "random":
-            return np.random.rand(self.n_clusters, col)
-        elif self.initialisation == "forgy":
-            liste = []
-            for _ in range(self.n_clusters):
-                liste.append(self.data[np.random.randint(0, self.data.shape[0])])
-            return liste
+        if self._initialization == "random":
+            return np.random.rand(self.n_clusters, X.shape[1])
+        elif self._initialization == "forgy":
+            return [X[np.random.randint(0, X.shape[0])]
+                    for i in range(self.n_clusters)]
 
-    def voronoi_partition(self, liste_prototypes: np.array) -> Dict:
+    def voronoi_partition(self, liste_prototypes: np.array, 
+            colors: List[str], X: np.ndarray) -> Tuple[Dict,List[str]]:
         """
         Cette methode prend en argument la liste des prototypes.
         A partir de cette liste, on va créer les nouveaux clusters,
         des sous partitions en fonction des distances de chaque point
         Avec les prototypes.
         """
-        partition = {}
+        color_list = []
+        partition: Dict = {}
+#        Initialisation du dict
         for init_index in range(len(liste_prototypes)):
             partition[str(init_index)] = []
 
-        for data_point in self.data:
+        for data_point in X:
             min_dist: float = 100.
             min_dist_arg: int = 0
             for element in range(len(liste_prototypes)):
@@ -83,101 +74,88 @@ class KMeans:
                 if temp_dist < min_dist:
                     min_dist = temp_dist
                     min_dist_arg = element
-            # make sure the list is not empty before stacking rows
+            color_list.append(colors[min_dist_arg])
+#            make sure the list is not empty before stacking rows
             if len(partition[str(min_dist_arg)]) != 0:
-                partition[str(min_dist_arg)] = np.row_stack([partition[str(min_dist_arg)], 
-                                                             data_point])
+                partition[str(min_dist_arg)] = np.row_stack(
+                    [partition[str(min_dist_arg)], data_point])
             else:
                 partition[str(min_dist_arg)].append(data_point)
+        return partition, color_list
 
-        return partition
-
-    def compute_distance(self,
-                         pointa: np.array,
-                         pointb: np.array) -> float:
+    def compute_distance(self, pointa: np.array, pointb: np.array) -> float:
         """
         Distances entre 2 vecteurs
         """
-        assert len(pointa) == len(pointb), "les deux arrays"\
-        "n'ont pas la meme dim ! "
-
+        assert len(pointa) == len(pointb), "Arrays must be the same"\
+                                           "dim ! "
         distance = 0
         if self.distance == "euclidian":
             for element in range(len(pointa)):
-                distance += (pointa[element] - pointb[element]) **2
+                distance += (pointa[element] - pointb[element]) ** 2
             return math.sqrt(distance)
+
         elif self.distance == "manhattan":
             for element in range(len(pointa)):
                 distance += abs(pointa[element] - pointb[element])
             return distance
 
-    def update_centroids(self,
-                         dic: Dict,
+        raise AttributeError("The distance specified is invalid")
+
+    def update_centroids(self, partition: Dict,
                          previous_list: np.array) -> Tuple[np.array, float]:
         """
         renvoie le baricentre de chaque cluster
         """
-        dist: float = 0
-        liste_update_centroids = []
-        for _, value in dic.items():
-            update_centroid = []
+        dist: float = 0.
+        centroids = []
+        for _, value in partition.items():
             if len(value) != 0:
-                for i in range(value.shape[1]):
-                    update_centroid.append(np.mean(value[:, i]))
-                liste_update_centroids.append(update_centroid)
-            for element in range(len(liste_update_centroids)):
-                dist += self.compute_distance(\
-                        np.array(liste_update_centroids[element]),
-                        np.array(previous_list[element]))
-        return np.array(liste_update_centroids), dist
+                update_centroid = [np.mean(value[:, i])
+                                   for i in range(value.shape[1])]
+                centroids.append(update_centroid)
+            for element in range(len(centroids)):
+                dist += self.compute_distance(
+                    np.array(centroids[element]),
+                    np.array(previous_list[element]))
+        return np.array(centroids), dist
 
-    def train(self) -> Tuple[np.array, np.array]:
+    def fit(self, X):
         """
-        entrainement du modele
+        Training and vizualizing
         """
-        l_proto = self.initialization(forgy=True)
-        partition = {}
-        fig = plt.figure()
-        ims = []
+        colors = sns.color_palette(None, self.n_clusters)
+        prototypes = self.initialization(X, forgy=True)
         for _ in range(self.n_iters):
-            partition = self.voronoi_partition(l_proto)
-            l_proto, previous_dist = self.update_centroids(partition, l_proto)
-            print("centroids: {}".format(l_proto))
-            if l_proto.shape[1] == 2:
-                a, = plt.plot(self.data[:, 0], self.data[:, 1], 'o', color='b')
-                b, = plt.plot(l_proto[:, 0], l_proto[:, 1], 'X', color='r')
-                ims.append([a, b])
-         
+            partition, color_list = self.voronoi_partition(prototypes, colors, X)
+            prototypes, previous_dist = self.update_centroids(partition,
+                                                              prototypes)
+            print("centroids: {}".format(prototypes))
+            a = plt.scatter(X[:, 0], X[:, 1], color=color_list, alpha=0.5)
+            b = plt.scatter(prototypes[:, 0], prototypes[:, 1], color=colors, 
+                                marker=">", edgecolor='black', s=100)
+            self._training_history.append([a, b])
+#            When the improvement of the algorith is bellow the threshold break 
             if previous_dist <= self.threshold:
                 break
-        # Plot the training process with a nice animation
-        img = animation.ArtistAnimation(fig, ims, interval=500, blit=True, repeat_delay=100)
+        return self
+    
+    def plot_training_history(self):
+        img = animation.ArtistAnimation(self.fig, self._training_history, interval=500,
+                                        blit=True, repeat_delay=100)
         plt.show()
-        return l_proto, partition
+        
 
 
-def load_data():
-    """
-    charger le dataset data_1024.csv
-    """
-    data = pd.read_csv(os.path.join(DATA_PATH,'data_1024.csv'), sep='\t')
-    del data['Driver_ID']
-    mean = data.mean(axis=0)
-    data -= mean
-    std = data.std(axis=0)
-    data /= std
-    return data.values
+
 
 if __name__ == "__main__":
-
-    #cluster_data = generate_data(line=50, col=4)
-    cluster_data = load_data()  
-    #instantiate KMeans class
+    X = load_data()
+#    instantiate KMeans class
     k_means = KMeans(n_clusters=4,
-                    data=cluster_data,
-                    distance="euclidian",
-                    threshold=0.001,
-                    n_iters = 1000,
-                    initialisation="forgy")
-    #kmeans training
-    centroids, partition_data = k_means.train()
+                     threshold=0.001,
+                     n_iters = 1000,
+                     initialization="forgy")
+#    kmeans training
+    k_means.fit(X)
+    k_means.plot_training_history()
