@@ -2,10 +2,6 @@
 Created on Tue Sep 11 16:18:25 2018
 
 @author: brieuc.lhelias
-TODO: S'assurer qu'il n'y a pas de dupliqués lors de l'initialisation
-de la forgy method.
-TODO: Deplacer la methode load data
-TODO: separer fit et plot
 """
 import os
 import math
@@ -13,14 +9,10 @@ import math
 from typing import Tuple, Dict, List
 
 import numpy as np
-import pandas as pd
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-
 import seaborn as sns
-
-from path import DATA_PATH
 
 
 class KMeans:
@@ -41,8 +33,7 @@ class KMeans:
 
     def initialization(self, X: np.ndarray, random: bool = False,
                        forgy: bool = False) -> np.array:
-        """
-        Cette fonction permet d'initialiser les centroids soit de maniere
+        """Cette fonction permet d'initialiser les centroids soit de maniere
         aléatoire ou en utilisant la technique de forgy
         """
         if self._initialization == "random":
@@ -53,8 +44,7 @@ class KMeans:
 
     def voronoi_partition(self, liste_prototypes: np.array, 
             colors: List[str], X: np.ndarray) -> Tuple[Dict,List[str]]:
-        """
-        Cette methode prend en argument la liste des prototypes.
+        """Cette methode prend en argument la liste des prototypes.
         A partir de cette liste, on va créer les nouveaux clusters,
         des sous partitions en fonction des distances de chaque point
         Avec les prototypes.
@@ -84,8 +74,7 @@ class KMeans:
         return partition, color_list
 
     def compute_distance(self, pointa: np.array, pointb: np.array) -> float:
-        """
-        Distances entre 2 vecteurs
+        """Distances entre 2 vecteurs
         """
         assert len(pointa) == len(pointb), "Arrays must be the same"\
                                            "dim ! "
@@ -104,8 +93,7 @@ class KMeans:
 
     def update_centroids(self, partition: Dict,
                          previous_list: np.array) -> Tuple[np.array, float]:
-        """
-        renvoie le baricentre de chaque cluster
+        """renvoie le baricentre de chaque cluster
         """
         dist: float = 0.
         centroids = []
@@ -121,8 +109,7 @@ class KMeans:
         return np.array(centroids), dist
 
     def fit(self, X):
-        """
-        Training and vizualizing
+        """Training and vizualizing
         """
         colors = sns.color_palette(None, self.n_clusters)
         prototypes = self.initialization(X, forgy=True)
@@ -131,31 +118,24 @@ class KMeans:
             prototypes, previous_dist = self.update_centroids(partition,
                                                               prototypes)
             print("centroids: {}".format(prototypes))
-            a = plt.scatter(X[:, 0], X[:, 1], color=color_list, alpha=0.5)
-            b = plt.scatter(prototypes[:, 0], prototypes[:, 1], color=colors, 
-                                marker=">", edgecolor='black', s=100)
-            self._training_history.append([a, b])
-#            When the improvement of the algorith is bellow the threshold break 
+            # Ensure we can plot the data ( = 2 dimensions)
+            if prototypes.shape[1] == 2:
+                a = plt.scatter(X[:, 0], X[:, 1], color=color_list, alpha=0.5)
+                b = plt.scatter(prototypes[:, 0], prototypes[:, 1], color=colors, 
+                                    marker=">", edgecolor='black', s=100)
+                self._training_history.append([a, b])
+#            Break when no major improvement 
             if previous_dist <= self.threshold:
                 break
         return self
     
     def plot_training_history(self):
-        img = animation.ArtistAnimation(self.fig, self._training_history, interval=500,
-                                        blit=True, repeat_delay=100)
-        plt.show()
-        
+        if self._training_history:
+            img = animation.ArtistAnimation(self.fig, self._training_history, interval=500,
+                                            blit=True, repeat_delay=100)
+            plt.show()
+        else:
+            raise DimensionError("Can not plot when dimension is greater than 2 !")
 
-
-
-
-if __name__ == "__main__":
-    X = load_data()
-#    instantiate KMeans class
-    k_means = KMeans(n_clusters=4,
-                     threshold=0.001,
-                     n_iters = 1000,
-                     initialization="forgy")
-#    kmeans training
-    k_means.fit(X)
-    k_means.plot_training_history()
+class DimensionError(Exception):
+    pass
