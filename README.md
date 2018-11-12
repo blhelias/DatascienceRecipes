@@ -22,7 +22,7 @@ TODO :
 
 ## K-Means clustering
 
-![alt text](https://i.imgur.com/IyhMapm.gif)
+![alt text](https://i.imgur.com/yeC5aJ4.gif)
 
 ## Decision Tree
 
