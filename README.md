@@ -63,7 +63,7 @@ tree.print_tree(my_tree)
 
 Data                                                                                       |  Decision tree
 :--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:
-![](https://github.com/blhelias/datascience_recipe/blob/master/doc/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/doc/tree.png)
+![](https://i.imgur.com/xjD9F4c.png)  |  ![](https://i.imgur.com/AH60Vo9.png)
 
 
 ## SVM
