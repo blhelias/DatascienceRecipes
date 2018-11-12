@@ -15,7 +15,7 @@ from scipy import linalg
 from sklearn.utils.extmath import svd_flip
 
 
-class PCA_homemade():
+class MyPCA():
     
     def __init__(self,n_components=None,components_=None):
        self.n_components = n_components
@@ -24,9 +24,9 @@ class PCA_homemade():
         """
         On soustrait la moyenne a chaque observations
         """
-        X_values=X.values
+        X_values = X.values
         self.mean = X_values.mean(axis=0)
-        X_values-=self.mean
+        X_values -= self.mean
 
         """
         Calcule de la matrice de covariance
@@ -64,7 +64,7 @@ class PCA_homemade():
         """
         Recontruire le nouveau jeu de donnees ( pca.transform)
         """
-        rep=np.dot(vector_of_eigvecs,X[:,:self.n_components].T)
+        rep = np.dot(vector_of_eigvecs,X[:,:self.n_components].T)
         return rep.T
 
 #%%
@@ -77,7 +77,7 @@ del dataset["Unnamed: 0"]
 list(dataset.columns.values)
 
 #clean the Sales column
-dataset.Sales=dataset.Sales.apply(lambda x: x.replace(',','.'))
+dataset.Sales = dataset.Sales.apply(lambda x: x.replace(',','.'))
 dataset = dataset.astype(float)
 
 #separate Sales target 
@@ -86,7 +86,7 @@ target = dataset.Sales
 del dataset["Sales"]
 #%%
 
-pca_homemade=PCA_homemade(n_components=5)
+pca_homemade = MyPCA(n_components=5)
 U,S,V = pca_homemade.fit(dataset)
 transformed_data_handmade = pca_homemade.transform(dataset.values)
 

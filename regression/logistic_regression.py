@@ -4,11 +4,10 @@ Created on Fri Sep 21 23:28:52 2018
 
 @author: brieuc.lhelias
 """
+from typing import List
 import math
 import numpy as np
-import sys
 import pandas as pd
-sys.path.insert(0, "../")
 
 from gradient_descent.gradient_descent import minimize_stochastic, safe
 
@@ -37,16 +36,17 @@ class LogReg:
 
     def __init__(self, learning_rate: float):
         self.learning_rate = learning_rate
+        self.beta = None
 
     def logistic_fn(self, x):
         return 1 / (1 + np.exp(-x))
 
     def prime_logistic_fn(self, x):
-#        return - np.exp(-x) / (1 + np.exp(-x)) ** 2
         return self.logistic_fn(x) * ( 1 - self.logistic_fn(x))
 
     def dot(self, v, w):
-        """v_1 * w_1 + ... + v_n * w_n"""
+        """v_1 * w_1 + ... + v_n * w_n
+        """
         return sum(v_i * w_i for v_i, w_i in zip(v, w))
 
     def predict(self, x_i, beta):
@@ -56,14 +56,15 @@ class LogReg:
         return self.predict(x_i, beta) - y_i
 
     def error_gradient(self, x_i, y_i, beta):
-        """the gradient corresponding to the ith squared error term"""
+        """the gradient corresponding to the ith squared error term
+        """
         return [x_ij * self.error(x_i, y_i, beta) 
                 for x_ij in x_i]
 
-    def estimate_beta(self, x, y):
+    def fit(self, x: np.ndarray, y: np.array):
         beta_initial = [random.random() for x_i in x[0]]
         print("beta init : ", beta_initial)
-        return minimize_stochastic(safe(self.error), 
+        self.beta = minimize_stochastic(safe(self.error), 
                                    safe(self.error_gradient),
                                    x, y,   
                                    beta_initial, 
@@ -83,15 +84,16 @@ if __name__ == "__main__":
     df -= df.mean(axis=0)
     df /= df.std(axis=0)
     data = df.values.tolist()
-    from sklearn.linear_model import LogisticRegression
+    
 
     # target = target.replace(0, -1)
     x = [[1] + row[:2] for row in data] # each element is [1, experience, salary]
     y = target.values.tolist() # each element is paid_account
     logreg = LogReg(0.01)
-    print(logreg.estimate_beta(x, y))
-
+    logreg.fit(x, y) # estimate beta
+    print(logreg.beta)
     #compare with sklearn 
+    from sklearn.linear_model import LogisticRegression
     regr = LogisticRegression(solver="sag", verbose=1)
     regr.fit(x, y)
     print(regr.coef_)
