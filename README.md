@@ -11,7 +11,7 @@ TODO: improve implementation of MyPCA class
 Few methods were tested such as OLS ans gradient descent.
 
 ```python
-linear_regression = LinReg(method="gradient_descent")
+linear_regression = LinReg(method="ols")
 linear_regression.fit(x, y)
 print("linear_regression", linear_regression.coefs)
 ```
@@ -21,6 +21,12 @@ linear_regression [b, m] = [8.005218309921203, 1.3221519786061433] # intercept, 
 ```
 
 ![alt text](https://i.imgur.com/LTrwkMk.png)
+
+```python
+linear_regression = LinReg(method="gradient_descent")
+linear_regression.fit(x, y)
+linear_regression.plot_history(x, y)
+```
 
 ![alt text](https://i.imgur.com/FlEYTl1.gif)
 
