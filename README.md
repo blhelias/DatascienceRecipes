@@ -7,6 +7,9 @@
 TODO: improve implementation of MyPCA class
 
 ## Linear regression
+
+Few methods were tested such as OLS ans gradient descent.
+
 ![alt text](https://i.imgur.com/LTrwkMk.png)
 
 ## K-Means clustering
