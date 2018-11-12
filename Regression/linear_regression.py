@@ -21,17 +21,12 @@ class LinReg:
     learning rate is very important in that case ; if it's too low, algorithm that converge
     and keep increasing exponentially !!
     """
-    def __init__(self,
-                 gradient_descent=False,
-                 least_square=False,
-                 mle=False,
+    def __init__(self, method: str = "ols",
                  lr=0.0001,
                  precision=0.01,
                  max_iters=10000,
                  previous_step_size=1):
-        self.gradient_descent = gradient_descent
-        self.least_square = least_square
-        self.mle = mle
+        self.method = method
         self.lr = lr
         self.precision = precision
         self.max_iters = max_iters
@@ -104,78 +99,11 @@ class LinReg:
         
         """
 
-        if self.gradient_descent:
+        if self.method == "gradient_descent":
             self.__run_step_gradient(x, y)
             
-        elif self.least_square:
+        elif self.method == "ols":
             self.__least_square(x, y)
             
-        elif self.mle:
+        elif self.method == "mle":
             self.__L(x, y)
-
-if __name__ == "__main__":
-    def compute_results(x,y,b,m,title,color):
-        """
-        param:
-            colonne X
-            colonne Y
-            coeff M (pente)
-            B (intercept)
-            titre du graph
-            couleur de la droite de regression
-        """
-
-
-        print(" {} : b = {} ; m = {}".format(title,b,m))
-        plt.figure(title)
-        plt.scatter(x,y,c=color)
-        ablines_values = [m * i + b for i in x]
-        plt.plot(x,ablines_values)
-        plt.title(title)
-
-        plt.show()
-    
-    """
-    1 - chargement du dataset
-    """
-    # logging.warning('[INFO] chargement du dataset')
-    data = pd.read_table("../data/data.txt",sep="\t",header=None)
-    x= np.array(data[0])
-    y= np.array(data[1])
-
-    """
-    2 - regression descente de gradient
-    """
-    # logging.warning('[INFO] entrainement regression')
-    lin_reg_gradient_descent = LinReg(gradient_descent=True)
-
-    # train liner regression model gradient descent
-    b,m = lin_reg_gradient_descent.fit(x,y)
-    title_dg = "gradient descent"
-    compute_results(x, y, b, m, title_dg, "blue")
-
-    """
-    3 - regression moindre carrés
-    """
-
-    lin_reg_least_square = LinReg(least_square=True)
-    #train linear regression model least_square
-    b,m = lin_reg_least_square.fit(x,y)
-    title_ls = "least square"
-    compute_results(x,y,b,m,title_ls,"red")
-
-    """
-    4 - regression Scikit-Learn
-    """
-    regr = LinearRegression(fit_intercept=True)    
-    # Train the model using the training sets
-    x=x.reshape((100,1))
-    y=y.reshape((100,1))
-    
-    regr.fit(x, y)
-
-    b = regr.intercept_[0]
-    m = regr.coef_[0][0]
-    title = "scikit learn"
-    compute_results(x,y,b,m,title,"green")
-    plt.show()
