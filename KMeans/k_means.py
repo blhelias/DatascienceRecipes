@@ -95,7 +95,7 @@ class KMeans:
         distance = 0
         if self.distance == "euclidian":
             for element in range(len(pointa)):
-                distance += (pointa[element] - pointb[element]) ** 2
+                distance += abs(pointa[element] - pointb[element]) ** 2
             return math.sqrt(distance)
 
         elif self.distance == "manhattan":
@@ -116,12 +116,12 @@ class KMeans:
         Returns:
             Tuple[np.array, float]:
                 - list_of_centroids
-                - dist : distance from previous centroid
+                - distortion : distance from previous centroid
                   coor to update centroid coor. This variable 
                   is usefull to check how well our algo is converging.
         """
 
-        dist: float = 0.
+        distortion: float = 0.
         centroids = []
         for _, value in partition.items():
             if len(value) != 0:
@@ -129,10 +129,10 @@ class KMeans:
                                    for i in range(value.shape[1])]
                 centroids.append(update_centroid)
             for element in range(len(centroids)):
-                dist += self.compute_distance(
+                distortion += self.compute_distance(
                     np.array(centroids[element]),
                     np.array(previous_centroids[element]))
-        return np.array(centroids), dist
+        return np.array(centroids), distortion
 
     def fit(self, X: np.ndarray):
         """train model
@@ -145,14 +145,13 @@ class KMeans:
         prototypes = self.initialization(X)
         for _ in range(self.n_iters):
             partition, color_list = self.voronoi_partition(prototypes, colors, X)
-            prototypes, previous_dist = self.update_centroids(partition,
-                                                              prototypes)
+            prototypes, distortion = self.update_centroids(partition, prototypes)
             print("centroids: {}".format(prototypes))
             # Ensure we can plot the data ( = 2 dimensions)
             if prototypes.shape[1] == 2:
                 self._training_history.append([prototypes, color_list])
  #            Break when no major improvement 
-            if previous_dist <= self.threshold:
+            if  distortion <= self.threshold:
                 break
         return self
     

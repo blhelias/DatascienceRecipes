@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 from KMeans import KMeans
 from Regression import LinReg, LogReg, MultiReg
+from ACP import PCA_scratch
 #sklearn
 from sklearn.linear_model import LinearRegression
 
@@ -78,11 +79,12 @@ if __name__ == "__main__":
     ax1.plot(x, ablines_values)
     plt.show()
 
+    lin_reg_grad.plot_history(x, y)
     #######################################
     # Multiple Linear Regression
     #######################################
     x = np.c_[np.ones(len(x)), x]
-    multi_reg = MultiReg(0.0001)
+    multi_reg = MultiReg(1e-4)
     multi_reg.fit(x, y)
     print(multi_reg.beta)
 
@@ -92,3 +94,32 @@ if __name__ == "__main__":
     multi_reg = MultiReg(0.001)
     multi_reg.fit(x, daily_minutes_good)
     print(multi_reg.beta)
+
+    ################################
+    # PCA
+    ###############################
+    # 1 Get the data in a dataframe
+    dataset = pd.read_csv("data/Sales.csv", sep=";")
+    del dataset["Unnamed: 0"]
+
+    list(dataset.columns.values)
+
+    # Clean the Sales column
+    dataset.Sales = dataset.Sales.apply(lambda x: x.replace(',','.'))
+    dataset = dataset.astype(float)
+
+    #separate Sales target
+    dataset.Sales = dataset.Sales.astype(float)
+    target = dataset.Sales
+    del dataset["Sales"]
+
+    pca_homemade = PCA_scratch(n_components=5)
+    U,S,V = pca_homemade.fit(dataset)
+    transformed_data_handmade = pca_homemade.transform(dataset.values)
+    print(transformed_data_handmade)
+        
+    # pca_sklearn = PCA(n_components=5)
+    # pca_sklearn.fit(dataset.values)
+    # #print(pca.explained_variance_ratio_)  
+    # transformed_data=pca_sklearn.transform(dataset.values)
+    # print(transformed_data)

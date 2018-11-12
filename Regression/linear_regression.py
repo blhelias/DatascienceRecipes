@@ -12,6 +12,7 @@ from basic_stats import Stats
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
 from sklearn.linear_model import LinearRegression
 
@@ -24,7 +25,7 @@ class LinReg:
     def __init__(self, method: str = "ols",
                  lr=0.0001,
                  precision=0.01,
-                 max_iters=10000,
+                 max_iters=10,
                  previous_step_size=1):
         self.method = method
         self.lr = lr
@@ -32,6 +33,7 @@ class LinReg:
         self.max_iters = max_iters
         self.previous_step_size = previous_step_size
         self.coefs = None
+        self._training_history = []
 
     def compute_points_error(self,points, b, m):
         """
@@ -64,6 +66,7 @@ class LinReg:
         m = 1
         while iters < self.max_iters:
             b, m = self.__step_gradient(x, y, b, m)
+            self._training_history.append([b, m])
             iters += 1
         self.coefs = [b, m]
 
@@ -107,3 +110,15 @@ class LinReg:
             
         elif self.method == "mle":
             self.__L(x, y)
+    
+    def plot_history(self, x, y):
+        fig = plt.figure("linear regression")
+        res = []
+        for element in self._training_history:
+            a = plt.scatter(x, y, c="red", s=100, edgecolor="black", alpha=0.5)
+            ablines_values_ = [element[1] * i + element[0] for i in x]
+            b, = plt.plot(x, ablines_values_, color="blue")
+            res.append([a, b])
+        img = animation.ArtistAnimation(fig, res, interval=500,
+                                        blit=True, repeat_delay=100)
+        plt.show()
