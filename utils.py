@@ -35,7 +35,7 @@ if __name__ == "__main__":
     #######################################
     X = load_kmeans_data()
 #    instantiate KMeans class
-    k_means = KMeans(n_clusters=4,
+    k_means = KMeans(K_clusters=4,
                      threshold=0.001,
                      n_iters = 1000,
                      initialization="forgy")

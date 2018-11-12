@@ -16,14 +16,14 @@ import seaborn as sns
 
 
 class KMeans:
+    """K-means iplementation
     """
-    let's implement simple K-means !
-    """
-    def __init__(self, n_clusters: int, distance: str = "euclidian", 
+
+    def __init__(self, K_clusters: int, distance: str = "euclidian", 
                  threshold: float = 0.1, n_iters: int = 50, 
                  initialization: str = "forgy") -> None:
 
-        self.n_clusters = n_clusters
+        self.K_clusters = K_clusters
         self.distance = distance
         self.threshold = threshold
         self.n_iters = n_iters
@@ -31,16 +31,20 @@ class KMeans:
         self._training_history = []
         
 
-    def initialization(self, X: np.ndarray, random: bool = False,
-                       forgy: bool = False) -> np.array:
-        """Cette fonction permet d'initialiser les centroids soit de maniere
-        aléatoire ou en utilisant la technique de forgy
+    def initialization(self, X: np.ndarray) -> np.array:
+        """Initialize centroids randomly or using forgy method
+        
+        Args:
+            X (np.ndarray): dataset       
+        Returns:
+            np.array: [description]
         """
+
         if self._initialization == "random":
-            return np.random.rand(self.n_clusters, X.shape[1])
+            return np.random.rand(self.K_clusters, X.shape[1])
         elif self._initialization == "forgy":
             return [X[np.random.randint(0, X.shape[0])]
-                    for i in range(self.n_clusters)]
+                    for i in range(self.K_clusters)]
 
     def voronoi_partition(self, liste_prototypes: np.array, 
             colors: List[str], X: np.ndarray) -> Tuple[Dict,List[str]]:
@@ -51,10 +55,10 @@ class KMeans:
         """
         color_list = []
         partition: Dict = {}
-#        Initialisation du dict
+        # Dict initialization with empty arrays
         for init_index in range(len(liste_prototypes)):
             partition[str(init_index)] = []
-
+        # Give each point of the dataset a class
         for data_point in X:
             min_dist: float = 100.
             min_dist_arg: int = 0
@@ -65,7 +69,7 @@ class KMeans:
                     min_dist = temp_dist
                     min_dist_arg = element
             color_list.append(colors[min_dist_arg])
-#            make sure the list is not empty before stacking rows
+            # Make sure the list is not empty before stacking rows
             if len(partition[str(min_dist_arg)]) != 0:
                 partition[str(min_dist_arg)] = np.row_stack(
                     [partition[str(min_dist_arg)], data_point])
@@ -74,10 +78,20 @@ class KMeans:
         return partition, color_list
 
     def compute_distance(self, pointa: np.array, pointb: np.array) -> float:
-        """Distances entre 2 vecteurs
+        """Compute the distance between 2 points
+        
+        Args:
+            pointa (np.array)
+            pointb (np.array)
+        
+        Raises:
+            AttributeError: Make sure the distance is implemented
+        
+        Returns:
+            float: distance
         """
-        assert len(pointa) == len(pointb), "Arrays must be the same"\
-                                           "dim ! "
+
+        assert len(pointa) == len(pointb), "Arrays must be the same dim !"
         distance = 0
         if self.distance == "euclidian":
             for element in range(len(pointa)):
@@ -92,9 +106,21 @@ class KMeans:
         raise AttributeError("The distance specified is invalid")
 
     def update_centroids(self, partition: Dict,
-                         previous_list: np.array) -> Tuple[np.array, float]:
-        """renvoie le baricentre de chaque cluster
+                         previous_centroids: np.array) -> Tuple[np.array, float]:
+        """This method 
+        
+        Args:
+            partition (Dict): voronoi partition
+            previous_list (np.array): previous centroids
+        
+        Returns:
+            Tuple[np.array, float]:
+                - list_of_centroids
+                - dist : distance from previous centroid
+                  coor to update centroid coor. This variable 
+                  is usefull to check how well our algo is converging.
         """
+
         dist: float = 0.
         centroids = []
         for _, value in partition.items():
@@ -105,14 +131,18 @@ class KMeans:
             for element in range(len(centroids)):
                 dist += self.compute_distance(
                     np.array(centroids[element]),
-                    np.array(previous_list[element]))
+                    np.array(previous_centroids[element]))
         return np.array(centroids), dist
 
-    def fit(self, X):
-        """Training and vizualizing
+    def fit(self, X: np.ndarray):
+        """train model
+        
+        Args:
+            X (np.ndarray): dataset
         """
-        colors = sns.color_palette(None, self.n_clusters)
-        prototypes = self.initialization(X, forgy=True)
+
+        colors = sns.color_palette(None, self.K_clusters)
+        prototypes = self.initialization(X)
         for _ in range(self.n_iters):
             partition, color_list = self.voronoi_partition(prototypes, colors, X)
             prototypes, previous_dist = self.update_centroids(partition,
@@ -121,17 +151,21 @@ class KMeans:
             # Ensure we can plot the data ( = 2 dimensions)
             if prototypes.shape[1] == 2:
                 self._training_history.append([prototypes, color_list])
-                # a = plt.scatter(X[:, 0], X[:, 1], color=color_list, alpha=0.5)
-                # b = plt.scatter(prototypes[:, 0], prototypes[:, 1], color=colors, 
-                #                     marker=">", edgecolor='black', s=100)
-                # self._training_history.append([a, b])
-#            Break when no major improvement 
+ #            Break when no major improvement 
             if previous_dist <= self.threshold:
                 break
         return self
     
-    def plot_training_history(self, X):
-        colors = sns.color_palette(None, self.n_clusters)
+    def plot_training_history(self, X: np.ndarray):
+        """Nice animation        
+        Args:
+            X (np.ndarray): dataset
+        
+        Raises:
+            DimensionError: Make sure you use 2D dataset
+        """
+
+        colors = sns.color_palette(None, self.K_clusters)
         if self._training_history:
             fig = plt.figure("KMEANS")
             res = []

@@ -40,7 +40,7 @@ def test_linear_regression():
     """
     2 - regression descente de gradient
     """
-    lin_reg_grad = LinReg(gradient_descent=True)
+    lin_reg_grad = LinReg(method="gradient_descent")
     # train liner regression model gradient descent
     lin_reg_grad.fit(x, y)
     print(lin_reg_grad.coefs)
