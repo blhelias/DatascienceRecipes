@@ -1,4 +1,4 @@
-class Decision_Node:
+class DecisionNode:
     """
     A Decision Node asks a question.
 

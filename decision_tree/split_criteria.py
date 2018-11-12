@@ -1,4 +1,4 @@
-from leaf import class_counts
+from .leaf import class_counts
 import math
 
 class SplitCriteria:

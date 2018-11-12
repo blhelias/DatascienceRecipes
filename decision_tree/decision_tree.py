@@ -1,11 +1,11 @@
 import itertools
 from collections import namedtuple
 from typing import List, NamedTuple
-#from split_criteria import Gini, Entropy
-from data import data, Data
-from question import Question
-from leaf import Leaf, class_counts
-from decision_node import Decision_Node
+from .split_criteria import Gini, Entropy
+# from data import data, Data
+from .question import Question
+from .leaf import Leaf, class_counts
+from .decision_node import DecisionNode
 
 
 class Tree:
@@ -23,10 +23,10 @@ class Tree:
             return
 
         # Print the question at this node
-        print (spacing + str(node.question))
+        print(spacing + str(node.question))
 
         # Call this function recursively on the true branch
-        print (spacing + '--> True:')
+        print(spacing + '--> True:')
         self.print_tree(node.true_branch, spacing + "  ")
 
         # Call this function recursively on the false branch
@@ -47,8 +47,8 @@ class Tree:
                 false_row.append(row)
         return true_row, false_row
 
-    def build_tree(self, rows, depth=0):
-        """Builds the tree.
+    def fit(self, rows, depth=0):
+        """Build the tree.
 
         Rules of recursion: 1) Believe that it works. 2) Start by checking
         for the base case (no further information gain). 3) Prepare for
@@ -60,7 +60,8 @@ class Tree:
         # Try partitioing the dataset on each of the unique attribute,
         # calculate the information gain,
         # and return the question that produces the highest gain.
-        gain, question = self.find_best_split(rows)
+        header = rows[0]._fields
+        gain, question = self.find_best_split(rows, header)
         # Base case: no further info gain
         # Since we can ask no further questions,
         # we'll return a leaf.
@@ -84,31 +85,30 @@ class Tree:
             return Leaf(rows)
         else:
             # Recursively build the true branch.
-            true_branch = self.build_tree(true_rows, depth+1)
+            true_branch = self.fit(true_rows, depth+1)
 
             # Recursively build the false branch.
-            false_branch = self.build_tree(false_rows, depth+1)
+            false_branch = self.fit(false_rows, depth+1)
 
             # Return a Question node.
             # This records the best feature / value to ask at this point,
             # as well as the branches to follow
             # depending on the answer.
-        return Decision_Node(question, true_branch, false_branch, depth)
+        return DecisionNode(question, true_branch, false_branch, depth)
 
-    def find_best_split(self, data):
+    def find_best_split(self, data, header):
         """Find the best question to ask by iterating over every feature / value
         and calculating the information gain."""
         best_gain = 0  # keep track of the best information gain
         best_question = None  # keep train of the feature / value that produced it
         current_uncertainty = Entropy().get_impurity(data)
         n_features = len(data[0]) - 1  # number of columns
-
         for col in range(n_features):  # for each feature
 
             values = set([row[col] for row in data])  # unique values in the column
             for val in values:  # for each value
 
-                question = Question(col, val)
+                question = Question(col, val, header)
                 # try splitting the dataset
                 true_rows, false_rows = self.partition(data, question)
 
@@ -149,9 +149,9 @@ class Tree:
             probs[lbl] = str(int(counts[lbl] / total * 100)) + "%"
         return probs
 
-if __name__ == "__main__":
-    tree = Tree() 
-    my_tree = tree.build_tree(data)
-    tree.print_tree(my_tree)
+# if __name__ == "__main__":
+#     tree = Tree() 
+#     my_tree = tree.fit(data) # build tree
+#     tree.print_tree(my_tree)
 
     

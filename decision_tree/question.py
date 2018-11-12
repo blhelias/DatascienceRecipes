@@ -4,9 +4,10 @@ class Question:
     """
     question used to partition data
     """
-    def __init__(self, column, value):
+    def __init__(self, column, value, header):
         self.column = column
         self.value = value
+        self.header = header
     
     def match(self, example):
         """
@@ -24,9 +25,8 @@ class Question:
     def __repr__(self):
         # This is just a helper method to print
         # the question in a readable format.
-        header = data.Data._fields
         condition = "=="
         if self.is_numeric(self.value):
             condition = ">="
         return "Is %s %s %s?" % (
-            header[self.column], condition, str(self.value))
+            self.header[self.column], condition, str(self.value))
