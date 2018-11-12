@@ -61,7 +61,7 @@ my_tree = tree.fit(data) # build tree
 tree.print_tree(my_tree)
 ```
 
-Table                                                                                         |  Decision tree
+Data                                                                                       |  Decision tree
 :--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:
 ![](https://github.com/blhelias/datascience_recipe/blob/master/doc/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/doc/tree.png)
 
