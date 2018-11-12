@@ -24,6 +24,8 @@ linear_regression [b, m] = [8.005218309921203, 1.3221519786061433] # intercept, 
 
 ## Logistic Regression
 
+### In this section, we build a logistic regression and compare our results with scikit learn.
+
 ```python
 logreg = LogReg(lr=0.01)
 logreg.fit(x, y) # estimate beta parameters
@@ -33,8 +35,6 @@ print(logreg.beta)
 ```
 [-1.52102262  2.73661736 -2.64723693]
 ```
-
-### In this section, we build a logistic regression and compare our results with scikit learn.
 
 TODO :
 
