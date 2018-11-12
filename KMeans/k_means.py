@@ -137,5 +137,6 @@ class KMeans:
         else:
             raise DimensionError("Can not plot when dimension is greater than 2 !")
 
+
 class DimensionError(Exception):
     pass
