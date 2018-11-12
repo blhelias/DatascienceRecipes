@@ -6,7 +6,7 @@
 
 TODO: improve implementation of MyPCA class
 
-## Least Square / Polynomial regression
+## Linear regression
 ![alt text](https://i.imgur.com/LTrwkMk.png)
 
 ## K-Means clustering
