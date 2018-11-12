@@ -6,7 +6,7 @@
 
 Histogramme des valeurs propres indiquant la part de l’ensemble de l’information contenue sur chaque facteur, ou composante principale. Ici le premier axe concentre la grande majorité de l'information.
 
-![alt text](https://i.imgur.com/KzILper.png)
+![alt text](https://i.imgur.com/QpvXWgL.png)
 
 ## Linear regression
 
