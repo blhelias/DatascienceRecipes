@@ -5,7 +5,7 @@
 ## ACP
 
 ## Least Square / Polynomial regression
-<img src="https://github.com/blhelias/datascience_recipe/blob/master/doc/least_square.png" width="400">
+<img src="https://i.imgur.com/ps1gLel.png" width="400">
 
 ## K-Means clustering
 
