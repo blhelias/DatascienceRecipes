@@ -5,7 +5,7 @@
 ## ACP
 
 ## Least Square / Polynomial regression
-![alt text](https://i.imgur.com/PdrFWaL.png)
+![alt text](https://i.imgur.com/LTrwkMk.png)
 
 ## K-Means clustering
 
