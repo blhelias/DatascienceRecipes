@@ -12,18 +12,31 @@ import math
 
 def minimize_stochastic(target_fn: Callable,
                         gradient_fn: Callable,
-                        x: List[List[float]], y: List[float],
+                        x: np.ndarray, y: np.array,
                         theta_0: List[float],
                         learning_rate: float) -> Optional[List[float]]:
+    """Minimize function using gradient Descent
+    
+    Args:
+        target_fn (Callable): function to minimize
+        gradient_fn (Callable): derivative of this function (gradient)
+        x (np.ndarray): data
+        y (np.array): target
+        theta_0 (np.array): list of coeff
+        learning_rate (float)
+    
+    Returns:
+        Optional[List[float]]: list of the coefficients
+    """
+
     num_iters_with_no_improvements = 0
     data = list(zip(x, y))
     theta = theta_0
     min_theta, min_value = None, float("inf")
     lr = learning_rate
-    count=0
+    count = 0
     while num_iters_with_no_improvements < 100:
-        loss = (1/2*len(x)) * sum(target_fn(x_i, y_i, theta) for x_i, y_i in data)
-#        print("loss", loss)
+        loss = 0.5 * len(x) * sum(target_fn(x_i, y_i, theta) for x_i, y_i in data)
         if loss < min_value:
             improvement = min_value - loss
             if improvement <= 0.01:
@@ -56,16 +69,11 @@ def safe(f):
     return safe_f
 
 def scalar_multiply(scalar, vector):
-    # vector = map(lambda x: x * scalar, vector)
-    # return list(vector)
-#    print("scalar", scalar)
-#    print("vector", vector)
     return [scalar * v_i for v_i in vector]
 
 def vector_substract(vec1, vec2):
-    # sub = map(float.__sub__, vec1, vec2)
-    # return list(sub)
     return [v_i - w_i for v_i, w_i in zip(vec1,vec2)]
+    
 def dot(v, w):
     """v_1 * w_1 + ... + v_n * w_n"""
     return sum(v_i * w_i for v_i, w_i in zip(v, w))
