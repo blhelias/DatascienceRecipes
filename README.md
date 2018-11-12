@@ -5,11 +5,11 @@
 ## ACP
 
 ## Least Square / Polynomial regression
-<img src="https://github.com/blhelias/datascience_recipe/blob/master/regression/least_square.png" width="400">
+<img src="https://github.com/blhelias/datascience_recipe/blob/master/doc/least_square.png" width="400">
 
 ## K-Means clustering
 
-![alt text](http://g.recordit.co/ORrOucbbYr.gif)
+![alt text](https://i.imgur.com/IyhMapm.gif)
 
 
 ## Logistic Regression
@@ -26,7 +26,7 @@ Google tutorial with some few additionnals options
 
 Table                                                                                         |  Decision tree
 :--------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:
-![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/decision_tree/tree.png)
+![](https://github.com/blhelias/datascience_recipe/blob/master/doc/PlayTennis.jpg)  |  ![](https://github.com/blhelias/datascience_recipe/blob/master/doc/tree.png)
 
 
 ## SVM
