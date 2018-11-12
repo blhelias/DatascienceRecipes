@@ -12,11 +12,6 @@ Few methods were tested such as OLS ans gradient descent.
 
 ![alt text](https://i.imgur.com/LTrwkMk.png)
 
-## K-Means clustering
-
-![alt text](https://i.imgur.com/IyhMapm.gif)
-
-
 ## Logistic Regression
 
 ### In this section, we build a logistic regression and compare our results with scikit learn.
@@ -24,7 +19,11 @@ Few methods were tested such as OLS ans gradient descent.
 TODO :
   * Add some regularization
   * Try to implement logreg with scikit learn's cost function
-  
+
+## K-Means clustering
+
+![alt text](https://i.imgur.com/IyhMapm.gif)
+
 ## Decision Tree
 
 Google tutorial with some few additionnals options
