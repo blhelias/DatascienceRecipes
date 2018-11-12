@@ -35,7 +35,7 @@ def minimize_stochastic(target_fn: Callable,
     min_theta, min_value = None, float("inf")
     lr = learning_rate
     count = 0
-    while num_iters_with_no_improvements < 100:
+    while num_iters_with_no_improvements < 1000:
         loss = 0.5 * len(x) * sum(target_fn(x_i, y_i, theta) for x_i, y_i in data)
         if loss < min_value:
             improvement = min_value - loss
@@ -69,14 +69,17 @@ def safe(f):
     return safe_f
 
 def scalar_multiply(scalar, vector):
-    return [scalar * v_i for v_i in vector]
+    # return [scalar * v_i for v_i in vector]
+    return np.multiply(scalar, vector)
 
 def vector_substract(vec1, vec2):
-    return [v_i - w_i for v_i, w_i in zip(vec1,vec2)]
+    # return [v_i - w_i for v_i, w_i in zip(vec1,vec2)]
+    return np.subtract(vec1, vec2)
     
 def dot(v, w):
     """v_1 * w_1 + ... + v_n * w_n"""
-    return sum(v_i * w_i for v_i, w_i in zip(v, w))
+    # return sum(v_i * w_i for v_i, w_i in zip(v, w))
+    return np.dot(v, w)
     
 def random_order(arr: np.ndarray):
     """generator that returns the elements of data in random order"""
