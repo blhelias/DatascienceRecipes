@@ -29,7 +29,7 @@ class KMeans:
         self.n_iters = n_iters
         self._initialization = initialization
         self._training_history = []
-        self.fig = plt.figure("KMEANS")
+        
 
     def initialization(self, X: np.ndarray, random: bool = False,
                        forgy: bool = False) -> np.array:
@@ -120,18 +120,27 @@ class KMeans:
             print("centroids: {}".format(prototypes))
             # Ensure we can plot the data ( = 2 dimensions)
             if prototypes.shape[1] == 2:
-                a = plt.scatter(X[:, 0], X[:, 1], color=color_list, alpha=0.5)
-                b = plt.scatter(prototypes[:, 0], prototypes[:, 1], color=colors, 
-                                    marker=">", edgecolor='black', s=100)
-                self._training_history.append([a, b])
+                self._training_history.append([prototypes, color_list])
+                # a = plt.scatter(X[:, 0], X[:, 1], color=color_list, alpha=0.5)
+                # b = plt.scatter(prototypes[:, 0], prototypes[:, 1], color=colors, 
+                #                     marker=">", edgecolor='black', s=100)
+                # self._training_history.append([a, b])
 #            Break when no major improvement 
             if previous_dist <= self.threshold:
                 break
         return self
     
-    def plot_training_history(self):
+    def plot_training_history(self, X):
+        colors = sns.color_palette(None, self.n_clusters)
         if self._training_history:
-            img = animation.ArtistAnimation(self.fig, self._training_history, interval=500,
+            fig = plt.figure("KMEANS")
+            res = []
+            for element in self._training_history:
+                a = plt.scatter(X[:, 0], X[:, 1], color=element[1], alpha=0.5)
+                b = plt.scatter(element[0][:, 0], element[0][:, 1], color=colors, 
+                                marker=">", edgecolor='black', s=100)
+                res.append([a, b])
+            img = animation.ArtistAnimation(fig, res, interval=500,
                                             blit=True, repeat_delay=100)
             plt.show()
         else:
