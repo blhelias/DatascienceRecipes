@@ -1,8 +1,10 @@
-# Datascience Recipe
+# Datascience Recipes
 
 ### Let's implement ML algorithms from scratch !!
 
 ## ACP
+
+TODO: improve implementation of MyPCA class
 
 ## Least Square / Polynomial regression
 ![alt text](https://i.imgur.com/LTrwkMk.png)
