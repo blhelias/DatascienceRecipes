@@ -22,6 +22,8 @@ linear_regression [b, m] = [8.005218309921203, 1.3221519786061433] # intercept, 
 
 ![alt text](https://i.imgur.com/LTrwkMk.png)
 
+![alt text](https://i.imgur.com/FlEYTl1.gif)
+
 ## Logistic Regression
 
 ### In this section, we build a logistic regression and compare our results with scikit learn.
