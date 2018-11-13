@@ -17,6 +17,7 @@ import seaborn as sns
 
 class KMeans:
     """K-means iplementation
+    TODO: revoir distortion
     """
 
     def __init__(self, K_clusters: int, distance: str = "euclidian", 
@@ -29,6 +30,7 @@ class KMeans:
         self.n_iters = n_iters
         self._initialization = initialization
         self._training_history = []
+        self._distortion = 0.
         
 
     def initialization(self, X: np.ndarray) -> np.array:
@@ -53,6 +55,7 @@ class KMeans:
         des sous partitions en fonction des distances de chaque point
         Avec les prototypes.
         """
+        self._distortion = 0.
         color_list = []
         partition: Dict = {}
         # Dict initialization with empty arrays
@@ -60,21 +63,23 @@ class KMeans:
             partition[str(init_index)] = []
         # Give each point of the dataset a class
         for data_point in X:
-            min_dist: float = 100.
-            min_dist_arg: int = 0
+            min_dist: float = float('Inf')
+            min_dist_arg: int = -1
             for element in range(len(liste_prototypes)):
                 temp_dist = self.compute_distance(data_point,
                                                   liste_prototypes[element])
                 if temp_dist < min_dist:
                     min_dist = temp_dist
                     min_dist_arg = element
-            color_list.append(colors[min_dist_arg])
+            if X.shape[1] == 2:
+                color_list.append(colors[min_dist_arg])
             # Make sure the list is not empty before stacking rows
             if len(partition[str(min_dist_arg)]) != 0:
                 partition[str(min_dist_arg)] = np.row_stack(
                     [partition[str(min_dist_arg)], data_point])
             else:
                 partition[str(min_dist_arg)].append(data_point)
+            self._distortion += min_dist
         return partition, color_list
 
     def compute_distance(self, pointa: np.array, pointb: np.array) -> float:
@@ -116,12 +121,12 @@ class KMeans:
         Returns:
             Tuple[np.array, float]:
                 - list_of_centroids
-                - distortion : distance from previous centroid
+                - dist : distance from previous centroid
                   coor to update centroid coor. This variable 
                   is usefull to check how well our algo is converging.
         """
 
-        distortion: float = 0.
+        dist: float = 0.
         centroids = []
         for _, value in partition.items():
             if len(value) != 0:
@@ -129,10 +134,10 @@ class KMeans:
                                    for i in range(value.shape[1])]
                 centroids.append(update_centroid)
             for element in range(len(centroids)):
-                distortion += self.compute_distance(
+                dist += self.compute_distance(
                     np.array(centroids[element]),
                     np.array(previous_centroids[element]))
-        return np.array(centroids), distortion
+        return np.array(centroids), dist
 
     def fit(self, X: np.ndarray):
         """train model
@@ -145,8 +150,9 @@ class KMeans:
         prototypes = self.initialization(X)
         for _ in range(self.n_iters):
             partition, color_list = self.voronoi_partition(prototypes, colors, X)
+            print(self._distortion)
             prototypes, distortion = self.update_centroids(partition, prototypes)
-            print("centroids: {}".format(prototypes))
+            # print("centroids: {}".format(prototypes))
             # Ensure we can plot the data ( = 2 dimensions)
             if prototypes.shape[1] == 2:
                 self._training_history.append([prototypes, color_list])
@@ -174,7 +180,8 @@ class KMeans:
                                 marker=">", edgecolor='black', s=100)
                 res.append([a, b])
             img = animation.ArtistAnimation(fig, res, interval=500,
-                                            blit=True, repeat_delay=100)
+                                            blit=True, repeat_delay=100) # must store animation in a variable
+                                                                         # even if this variable is not used
             plt.show()
         else:
             raise DimensionError("Can not plot when dimension is greater than 2 !")

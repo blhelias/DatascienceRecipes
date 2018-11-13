@@ -20,7 +20,7 @@ DATA_PATH = "C:\\Users\\brieu\\Desktop\\workspace\\machine learning from scratch
 
 def load_kmeans_data():
     """
-    charger le dataset data_1024.csv
+    charger le dataset data_1024.csv()
     """
     data = pd.read_csv(os.path.join(DATA_PATH, 'data_1024.csv'), sep='\t')
     del data['Driver_ID']
