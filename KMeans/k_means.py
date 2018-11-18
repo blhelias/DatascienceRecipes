@@ -17,7 +17,9 @@ import seaborn as sns
 
 class KMeans:
     """K-means iplementation
-    TODO: revoir distortion
+    We want to minimize the distortion function:
+    J(c,mu)=sum_1_m,n(x(i)j−mu_c(i),j)^2
+    
     """
 
     def __init__(self, K_clusters: int, distance: str = "euclidian", 
