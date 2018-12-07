@@ -1,6 +1,11 @@
 # Datascience Recipes
 
 ## Let's implement ML algorithms from scratch !
+TODO:
+* Gaussian Mixture
+* Improve Decision Tree
+* Boosting
+
 
 ### ACP
 
